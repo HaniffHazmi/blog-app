@@ -20,7 +20,9 @@
                             <div class="mt-3">
                                 <a href="{{ route('posts.edit', $post) }}" class="text-blue-600">Edit</a>
 
-                                <form action="{{ route('posts.destroy', $post) }}" method="POST" class="inline">
+                                <form action="{{ route('posts.destroy', $post) }}" method="POST"
+                                    onsubmit="return confirm('Are you sure you want to delete this post?');"
+                                    class="inline">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" class="text-red-600 ml-2">

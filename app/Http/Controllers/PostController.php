@@ -63,24 +63,52 @@ class PostController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Post $post)
     {
-        //
+        if(auth()->user()->role !== 'admin'){
+            abort(403);
+        }
+
+        return view('posts.edit', compact('post'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Post $post)
     {
-        //
+        if (auth()->user()->role !== 'admin'){
+            abort(403);
+        }
+
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'content'=> 'required|string',
+        ]);
+
+        $post->update([
+            'title' => $request->title,
+            'content' => $request->content,
+        ]);
+
+        return redirect()->route('posts.index')
+            ->with('success','Post updated successfully');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Post $post)
     {
-        //
+        if (auth()->user()->role !== 'admin'){
+            abort(403);
+        }
+
+        $post->delete();
+
+        return redirect()->route('posts.index')
+            ->with('success','Post deleted successfully');
+
+
     }
 }
