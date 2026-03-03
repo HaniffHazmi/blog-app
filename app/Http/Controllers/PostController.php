@@ -32,6 +32,8 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
+        // dd($request->all());
+
         if (auth()->user()->role !== 'admin') {
             abort(403);
         }
